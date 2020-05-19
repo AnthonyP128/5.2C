@@ -1,0 +1,96 @@
+# Import the GPIO and time libraries
+import time
+from tkinter import *
+import tkinter.font
+from gpiozero import LED
+import RPi.GPIO
+#####Morse code ######
+CODE = {' ': ' ',
+        "'": '.----.',
+        '(': '-.--.-',
+        ')': '-.--.-',
+        ',': '--..--',
+        '-': '-....-',
+        '.': '.-.-.-',
+        '/': '-..-.',
+        '0': '-----',
+        '1': '.----',
+        '2': '..---',
+        '3': '...--',
+        '4': '....-',
+        '5': '.....',
+        '6': '-....',
+        '7': '--...',
+        '8': '---..',
+        '9': '----.',
+        ':': '---...',
+        ';': '-.-.-.',
+        '?': '..--..',
+        'A': '.-',
+        'B': '-...',
+        'C': '-.-.',
+        'D': '-..',
+        'E': '.',
+        'F': '..-.',
+        'G': '--.',
+        'H': '....',
+        'I': '..',
+        'J': '.---',
+        'K': '-.-',
+        'L': '.-..',
+        'M': '--',
+        'N': '-.',
+        'O': '---',
+        'P': '.--.',
+        'Q': '--.-',
+        'R': '.-.',
+        'S': '...',
+        'T': '-',
+        'U': '..-',
+        'V': '...-',
+        'W': '.--',
+        'X': '-..-',
+        'Y': '-.--',
+        'Z': '--..',
+        '_': '..--.-'}
+######End of morse code######
+RPi.GPIO.setmode(RPi.GPIO.BCM)
+LIGHT = 14
+RPi.GPIO.setup(LIGHT, RPi.GPIO.OUT)
+
+def dot():
+        RPi.GPIO.output(LIGHT,True)
+        time.sleep(0.2)
+        RPi.GPIO.output(LIGHT,False)
+        time.sleep(0.2)
+def dash():
+        RPi.GPIO.output(LIGHT,True)
+        time.sleep(0.5)
+        RPi.GPIO.output(LIGHT,False)
+        time.sleep(0.2)
+
+def text():
+    try:
+         
+        while True:
+            input = ment.get()
+            for letter in input:
+                for symbol in CODE[letter.upper()]:
+                    if symbol == '-':
+                        dash()
+                    elif symbol == '.':
+                        dot()
+                    else:
+                        time.sleep(0.5)
+                time.sleep(0.5)
+    except KeyboardInterrupt:
+        GPIO.cleanup()
+        
+win = Tk()
+ment = StringVar()
+win.title("LED Toggler")
+win.geometry('500x100')
+myFont = tkinter.font.Font(family = 'Helvetica', size = 12, weight = "bold")
+mbutton = Button(win,text = 'OK',command = text).pack()
+mEntry = Entry(win,textvariable = ment).pack()
+GPIO.cleanup()
